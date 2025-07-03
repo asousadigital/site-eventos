@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste Planilha Google Sheets</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    button { margin: 10px 0; padding: 10px 20px; }
+    pre { background: #f0f0f0; padding: 10px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>Testador de Planilha Google Sheets</h1>
+
+  <button onclick="testarGET()">🔍 Buscar dados (GET)</button>
+  <button onclick="testarPOST()">➕ Enviar dados de teste (POST)</button>
+
+  <h2>Resposta:</h2>
+  <pre id="output">Clique em um dos botões acima.</pre>
+
+  <script>
+    const url = 'https://script.google.com/macros/s/AKfycbylNue7GWyF0yT_XkD2xpgBwOugFmzynPrt_nZX9dG5HMakL67Tm7MAuJ3XAznaXrE/exec';
+
+    function testarGET() {
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          document.getElementById('output').textContent = 'Erro: ' + err;
+        });
+    }
+
+    function testarPOST() {
+      const dados = {
+        nome: "Teste JS",
+        email: "teste@js.com",
+        idade: 123
+      };
+
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('output').textContent = "POST enviado com sucesso:\n" + JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        document.getElementById('output').textContent = 'Erro no POST: ' + err;
+      });
+    }
+  </script>
+</body>
+</html>
